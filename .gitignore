@@ -1,0 +1,14 @@
+# Python:
+*.py[cod]
+*.so
+*.egg
+*.egg-info
+
+*.settings
+*.project
+*.pydevproject
+
+*.json
+*.zip
+
+srcdata/*

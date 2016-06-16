@@ -1,0 +1,9 @@
+Milk,Egg,Bread,Chips
+Egg,Popcorn,Chips,Beer
+Egg,Bread,Chips
+Milk,Egg,Bread,Popcorn,Chips,Beer
+Milk,Bread,Beer
+Egg,Bread,Beer
+Milk,Bread,Chips
+Milk,Egg,Bread,Butter,Chips
+Milk,Egg,Butter,Chips
