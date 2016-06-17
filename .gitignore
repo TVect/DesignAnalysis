@@ -11,4 +11,5 @@
 *.json
 *.zip
 
-srcdata/*
+srcdata/design/data/*
+srcdata/module/data/*

@@ -22,10 +22,10 @@ def gen_real_request_no(size=10):
 
 
 if __name__ == "__main__":
-    gds_method_list = [GreedyDualSizeFrequency()]
+    gds_method_list = [GreedyDualSizeFrequency(limit_size=5*1024*1024*1024)]
 
 
-    request_times = 500
+    request_times = 5000
     request_no_set = set()
     for request_no in gen_real_request_no(size=request_times):
         for gds_method in gds_method_list:
