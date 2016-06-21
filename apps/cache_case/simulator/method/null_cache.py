@@ -18,10 +18,11 @@ class NullCache(CacheMethod):
         return self.fetch_remote_data(no)
 
     def fetch_remote_data(self, no):
-        remote_data = "fetch remote data: no = %s" % no
+        remote_data = "I am the data: no = %s" % no
         return remote_data
 
     def show_info(self):
+        print "NullCache---------"
         request_count = sum([value for _, value in self.request_dict.iteritems()])
         print "request count =", request_count, "distinct request count =", len(self.request_dict)
 #         for key, value in sorted(self.request_dict.items(), key = lambda item: item[1], reverse = True):
