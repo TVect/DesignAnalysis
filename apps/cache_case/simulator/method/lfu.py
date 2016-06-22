@@ -13,17 +13,9 @@ module_size_dict = dict(pickle.load(open(os.path.join(os.path.dirname(__file__),
 
 class LFUDecorator(CacheMethodDecorator):
     def __init__(self, cache_method_component, limit_size=1024*1024*1024):
-        self.cache_method_component = cache_method_component
-        self.limit_size = limit_size
+        super(LFUDecorator, self).__init__(cache_method_component, limit_size)
 
-        self.cache_dict = {}
         self.cache_frequently_dict = {} # 记录每一项被访问的次数
-
-        self.used_size = 0.0
-        self.hit_count = 0.0
-        self.byte_hit_count = 0.0
-        self.total_count = 0.0
-        self.byte_total_count = 0.0
 
 
     def fetch_data(self, no):
@@ -66,14 +58,3 @@ class LFUDecorator(CacheMethodDecorator):
 
     def get_data_size(self, no):
         return module_size_dict.get(no, 0)
-
-    def show_info(self):
-        print "LFUDecorator---------"
-        print "cache_size =", len(self.cache_dict), "byte_cache_size =", self.used_size 
-        print "total_count =", self.total_count, "hit_count =", self.hit_count,
-        print "hit_precent =", float(self.hit_count)/self.total_count
-        print "byte_total_count =", self.byte_total_count, "byte_hit_count =", self.byte_hit_count,
-        print "byte_hit_precent =", float(self.byte_hit_count)/self.byte_total_count
-        if self.cache_method_component:
-            self.cache_method_component.show_info()
-
