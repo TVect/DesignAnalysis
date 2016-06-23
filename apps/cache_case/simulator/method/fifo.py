@@ -12,12 +12,14 @@ MODULE_SIZE_FILE = "module_size.list"
 module_size_dict = dict(pickle.load(open(os.path.join(os.path.dirname(__file__), MODULE_SIZE_FILE))))
 
 class FIFODecorator(CacheMethodDecorator):
+    
+    method_describe = "FIFODecorator"
+    
     def __init__(self, cache_method_component, limit_size=1024*1024*1024):
         super(FIFODecorator, self).__init__(cache_method_component, limit_size)
         
         self.cache_fifo_list = [] # 新添加的项按顺序加入，按顺序弹出
-
-
+        
     def fetch_data(self, no):
         data_size = self.get_data_size(no)
         if not data_size:

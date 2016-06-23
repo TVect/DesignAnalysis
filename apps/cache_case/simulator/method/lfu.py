@@ -12,6 +12,9 @@ MODULE_SIZE_FILE = "module_size.list"
 module_size_dict = dict(pickle.load(open(os.path.join(os.path.dirname(__file__), MODULE_SIZE_FILE))))
 
 class LFUDecorator(CacheMethodDecorator):
+    
+    method_describe = "LFUDecorator"
+    
     def __init__(self, cache_method_component, limit_size=1024*1024*1024):
         super(LFUDecorator, self).__init__(cache_method_component, limit_size)
 

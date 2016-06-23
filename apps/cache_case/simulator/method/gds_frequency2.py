@@ -7,17 +7,25 @@
 import pickle
 import os
 from base import CacheMethodDecorator
+import math
 # import bisect
 
 MODULE_SIZE_FILE = "module_size.list"
 module_size_dict = dict(pickle.load(open(os.path.join(os.path.dirname(__file__), MODULE_SIZE_FILE))))
 
 class GDS2Decorator(CacheMethodDecorator):
-    def __init__(self, cache_method_component, limit_size=1024*1024*1024):
+    
+    method_describe = "GDS2Decorator"
+    
+    def __init__(self, cache_method_component, limit_size=1024*1024*1024, calc_priority_method=None):
         super(GDS2Decorator, self).__init__(cache_method_component, limit_size)
         
         self.cache_priority_dict = {}      #TODO 实现方式希望有一个类似的zset
         self.clock = 0      # 控制衰老
+        self.calc_priority_method = calc_priority_method
+
+        if self.calc_priority_method:
+            self.method_describe = "GDSDecorator + %s" % self.calc_priority_method.func_name
 
     def fetch_data(self, no):
         data_size = self.get_data_size(no)
@@ -80,13 +88,12 @@ class GDS2Decorator(CacheMethodDecorator):
 
 
     def calc_priority(self, freq, size):
-#         cost = 1
-        cost = (2 + size/536)
-        return self.clock + freq * cost/float(size)
-#         return self.clock + freq * cost / math.log(size)
-#         return self.clock + freq * cost
-#         return self.clock + freq * 1 / math.log(size)
-#         return self.clock + freq * 1 / float(size)
+        if self.calc_priority_method:
+            return self.calc_priority_method(self.clock, freq, size)
+        else:    
+            cost = 2 + size/536
+            return self.clock + freq * cost/float(size)
+            
 
 
     def get_data_size(self, no):
@@ -117,3 +124,28 @@ class GDS2Decorator(CacheMethodDecorator):
 
         def __lt__(self, other):
             return self.priority <= getattr(other, "priority", 0)
+
+
+def calc_priority_1(clock, freq, size):
+    cost = 1
+    return clock + freq * cost
+
+def calc_priority_2(clock, freq, size):
+    cost = 2 + size/536
+    return clock + freq * cost
+
+def calc_priority_3(clock, freq, size):
+    cost = 1
+    return clock + freq * cost / math.log(size)
+
+def calc_priority_4(clock, freq, size):
+    cost = 2 + size/536
+    return clock + freq * cost / math.log(size)
+
+def calc_priority_5(clock, freq, size):
+    cost = 1
+    return clock + freq * cost/float(size)
+
+def calc_priority_6(clock, freq, size):
+    cost = 2 + size/536
+    return clock + freq * cost/float(size)
